@@ -1,8 +1,7 @@
 package validation
 
 import (
-	"fmt"
-	"regexp"
+	"github.com/go4all/validaiton/utils"
 	"strings"
 )
 
@@ -24,15 +23,18 @@ func Run(request CanValidate) (bool, ErrorBag) {
 
 	for fieldPath, fieldRules := range _rules {
 		// Validate fieldPath
-		regex := regexp.MustCompile(`^[A-z]\w*(\.[A-z]\w*)*$`)
-		if !regex.MatchString(fieldPath) {
-			panic(fmt.Sprintf("'%s' field path is not valid", fieldPath))
+		err := utils.ValidateFieldPath(fieldPath)
+		if err != nil {
+			panic(err)
 		}
-
+		// This will hold errors for a specific field
 		fieldErrors := make([]string, 0)
+
 		for _, rule := range fieldRules {
-			if rule == "" {
-				continue
+			// Empty string for a rule should be ignored
+			err = utils.ValidateRule(rule)
+			if err != nil {
+				panic(err)
 			}
 			ruleName, ruleArgs := ParseRule(rule)
 			ruleCheck := GetRuleCheck(ruleName)
