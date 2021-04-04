@@ -5,32 +5,48 @@ import (
 	"strings"
 )
 
-// ValueByJsonTag will check for json tag on struct fields and return value of matching tag with provided name as argument
-func ValueByJsonTag(data interface{}, fieldPath string) (string, interface{}) {
-	path := strings.Split(fieldPath, ".")
-
+func GetValues(data interface{}) map[string]interface{} {
 	t := reflect.TypeOf(data)
 	v := reflect.ValueOf(data)
+	values := make(map[string]interface{})
 
 	if t.Kind() != reflect.Struct {
-		return path[0], nil
+		return nil
 	}
 
-	var value interface{} = nil
+	for i := 0; i < t.NumField(); i++ {
+		field := t.Field(i)
+		value := v.Field(i)
+		tag := field.Tag.Get("json")
 
-	for i := 0; i < t.NumField(); i ++ {
-		fieldTag := t.Field(i).Tag.Get("json")
-		if path[0] == fieldTag {
-			value = v.Field(i).Interface()
+		if tag == "" {
+			continue
+		}
+
+		if field.Type.Kind() == reflect.Struct {
+			result := GetValues(value.Interface())
+			for key, val := range result {
+				values[tag+"."+key] = val
+			}
+		} else {
+			values[tag] = value.Interface()
 		}
 	}
 
-	if value == nil || len(path) == 1 {
-		return path[0], value
-	} else {
-		return ValueByJsonTag(value, strings.Join(path[1:], "."))
-	}
+	return values
 }
 
+// ValueByFieldPath will search provided values map and return value which key is matching with fieldPath
+func ValueByFieldPath(values map[string]interface{}, fieldPath string) (string, interface{}) {
+	value, ok := values[fieldPath]
 
+	segments := strings.Split(fieldPath, ".")
 
+	name := segments[len(segments)-1]
+
+	if ok {
+		return name, value
+	}
+
+	return fieldPath, nil
+}

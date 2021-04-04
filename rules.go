@@ -1,9 +1,12 @@
 package validation
 
-import "github.com/go4all/validaiton/rules"
+import (
+	"github.com/go4all/validaiton/rules"
+	"github.com/go4all/validaiton/types"
+)
 
 // ruleList is a map of all RuleCheck functions that can be used in request validation.
-var ruleList = make(RuleList)
+var ruleList = make(types.RuleList)
 
 func init() {
 	AddRuleCheck("max", rules.Max{}.Check)
@@ -13,11 +16,11 @@ func init() {
 
 // AddRuleCheck will add RuleCheck in the map of RuleCheck functions with provided name to retrieve later
 // Use this to add custom RuleCheck function
-func AddRuleCheck(name string, rule RuleCheck) {
+func AddRuleCheck(name string, rule types.RuleCheck) {
 	ruleList[name] = rule
 }
 // GetRuleCheck will return a RuleCheck function added with provided name from the map of available RuleCheck functions
-func GetRuleCheck(name string) RuleCheck {
+func GetRuleCheck(name string) types.RuleCheck {
 	rule, exists := ruleList[name]
 	if !exists {
 		return nil

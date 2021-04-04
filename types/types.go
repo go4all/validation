@@ -1,6 +1,15 @@
-package validation
+package types
 
 import "reflect"
+
+// RuleConfig
+type RuleConfig struct {
+	FieldName string
+	FieldValue interface{}
+	RuleArgs []string
+	ErrMsg string
+	Values map[string]interface{}
+}
 // ErrorBag is map of error messages returned from request validation
 type ErrorBag map[string][]string
 // CanValidate is an interface that defines a struct to be validatable
@@ -10,10 +19,10 @@ type CanValidate interface {
 // Rule is an interface that defines a struct to be used as rule
 type Rule interface {
 	GetError(kind reflect.Kind, field string, args []string) string
-	Check(field string, value interface{}, args []string, message string) error
+	Check(RuleConfig) error
 }
 // RuleCheck is a function responsible for validating value depending on rule type
-type RuleCheck func(field string, value interface{}, args []string, message string) error
+type RuleCheck func(config RuleConfig) error
 // RuleList is a map of all registered rules
 type RuleList map[string]RuleCheck
 // RuleMap is a map of rules required to validate a request

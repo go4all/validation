@@ -1,6 +1,7 @@
 package validation
 
 import (
+	"github.com/go4all/validaiton/types"
 	"github.com/go4all/validaiton/utils"
 	"strings"
 )
@@ -17,9 +18,10 @@ func ParseRule(rule string) (string, []string) {
 }
 
 // Run will validate request with provided validation rules and return error messages if validation fails
-func Run(request CanValidate) (bool, ErrorBag) {
-	errs := make(ErrorBag)
+func Run(request types.CanValidate) (bool, types.ErrorBag) {
+	errs := make(types.ErrorBag)
 	_rules, _messages := request.Validation()
+	_values := GetValues(request)
 
 	for fieldPath, fieldRules := range _rules {
 		// Validate fieldPath
@@ -43,9 +45,17 @@ func Run(request CanValidate) (bool, ErrorBag) {
 				panic("'" + ruleName + "' rule is missing")
 			}
 
-			fieldName, fieldValue := ValueByJsonTag(request, fieldPath)
+			fieldName, fieldValue := ValueByFieldPath(_values, fieldPath)
 
-			err := ruleCheck(fieldName, fieldValue, ruleArgs, _messages[fieldPath][ruleName])
+			ruleConfig := types.RuleConfig{
+				FieldName: fieldName,
+				FieldValue: fieldValue,
+				RuleArgs: ruleArgs,
+				ErrMsg: _messages[fieldPath][ruleName],
+				Values: _values,
+			}
+
+			err := ruleCheck(ruleConfig)
 			if err != nil {
 				fieldErrors = append(fieldErrors, err.Error())
 			}

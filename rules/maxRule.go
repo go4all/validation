@@ -3,6 +3,7 @@ package rules
 import (
 	"errors"
 	"fmt"
+	"github.com/go4all/validaiton/types"
 	"github.com/go4all/validaiton/utils"
 	"reflect"
 	"strconv"
@@ -22,16 +23,16 @@ func (rule Max) GetError(kind reflect.Kind, field string, args []string) string 
 	return fmt.Sprintf("Max error not defined for %s type", kind)
 }
 
-func (rule Max) Check(field string, value interface{}, args []string, message string) error {
-	if len(args) == 0 {
+func (rule Max) Check(config types.RuleConfig) error {
+	if len(config.RuleArgs) == 0 {
 		return errors.New("missing args for max validation")
 	}
 	// Don't check nil value
-	if value == nil {
+	if config.FieldValue == nil {
 		return nil
 	}
 
-	result, convErr := strconv.ParseInt(args[0], 10, 32)
+	result, convErr := strconv.ParseInt(config.RuleArgs[0], 10, 32)
 
 	if convErr != nil {
 		return errors.New("invalid args for max validation")
@@ -41,21 +42,24 @@ func (rule Max) Check(field string, value interface{}, args []string, message st
 
 	valid := true
 
-	kind := reflect.TypeOf(value).Kind()
+	kind := reflect.TypeOf(config.FieldValue).Kind()
 
-	err := utils.ErrorMsg(message, rule.GetError(kind, field, args))
+	err := utils.ErrorMsg(config.ErrMsg, rule.GetError(
+		kind,
+		config.FieldName,
+		config.RuleArgs))
 
 	switch kind {
 	case reflect.Int:
-		valid = rule.checkInt(value, max)
+		valid = rule.checkInt(config.FieldValue, max)
 	case reflect.Float64:
-		valid = rule.checkFloat64(value, max)
+		valid = rule.checkFloat64(config.FieldValue, max)
 	case reflect.String:
-		valid = rule.checkString(value, max)
+		valid = rule.checkString(config.FieldValue, max)
 	case reflect.Map:
-		valid = rule.checkMap(value, max)
+		valid = rule.checkMap(config.FieldValue, max)
 	case reflect.Slice:
-		valid = rule.checkSlice(value, max)
+		valid = rule.checkSlice(config.FieldValue, max)
 	default:
 		return errors.New("invalid type for max validation")
 	}

@@ -1,7 +1,7 @@
 package validation
 
 import (
-	"fmt"
+	"github.com/go4all/validaiton/types"
 	"testing"
 )
 
@@ -17,8 +17,8 @@ type TestRequest struct {
 	Job    Job      `json:"job"`
 }
 
-func (tr TestRequest) Validation() (RuleMap, MessageMap)  {
-	rules := RuleMap{
+func (tr TestRequest) Validation() (types.RuleMap, types.MessageMap)  {
+	rules := types.RuleMap{
 		"name": {"required", "max:24"},
 		"age": {"required", "min:18"},
 		"skills": {"required", "max:53"},
@@ -26,7 +26,7 @@ func (tr TestRequest) Validation() (RuleMap, MessageMap)  {
 		"job.company": {"required"},
 	}
 
-	messages := MessageMap{
+	messages := types.MessageMap{
 		"name": map[string]string{
 			"required": "Please fill in your name",
 			"max": "Your name is too long",
@@ -49,6 +49,23 @@ func TestValidation_Run(t *testing.T) {
 			},
 		}
 		valid, errs := Run(request)
-		fmt.Println(valid, errs)
+
+		if valid {
+			t.Error("Expected validation failure")
+		}
+
+		err, ok := errs["job.company"]
+
+		if !ok {
+			t.Error("'job.company' key missing from errors")
+		}
+
+		if len(err) == 0 {
+			t.Error("Expected error for 'job.company'")
+		}
+
+		if err[0] != "company is required" {
+			t.Errorf("Expected error 'company is required' got '%s'", err[0])
+		}
 	})
 }

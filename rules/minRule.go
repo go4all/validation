@@ -3,6 +3,7 @@ package rules
 import (
 	"errors"
 	"fmt"
+	"github.com/go4all/validaiton/types"
 	"github.com/go4all/validaiton/utils"
 	"reflect"
 	"strconv"
@@ -22,16 +23,16 @@ func (rule Min) GetError(kind reflect.Kind, field string, args []string) string 
 	return fmt.Sprintf("Min error not defined for %s type", kind)
 }
 
-func (rule Min) Check(field string, value interface{}, args []string, message string) error {
-	if len(args) == 0 {
+func (rule Min) Check(config types.RuleConfig) error {
+	if len(config.RuleArgs) == 0 {
 		return errors.New("missing args for min validation")
 	}
 
-	if value == nil {
+	if config.FieldValue == nil {
 		return nil
 	}
 
-	result, convErr := strconv.ParseInt(args[0], 10, 32)
+	result, convErr := strconv.ParseInt(config.RuleArgs[0], 10, 32)
 
 	if convErr != nil {
 		return errors.New("invalid args for min validation")
@@ -41,21 +42,21 @@ func (rule Min) Check(field string, value interface{}, args []string, message st
 
 	valid := true
 
-	kind := reflect.TypeOf(value).Kind()
+	kind := reflect.TypeOf(config.FieldValue).Kind()
 
-	err := utils.ErrorMsg(message, rule.GetError(kind, field, args))
+	err := utils.ErrorMsg(config.ErrMsg, rule.GetError(kind, config.FieldName, config.RuleArgs))
 
 	switch kind {
 	case reflect.Int:
-		valid = rule.checkInt(value, min)
+		valid = rule.checkInt(config.FieldValue, min)
 	case reflect.Float64:
-		valid = rule.checkFloat64(value, min)
+		valid = rule.checkFloat64(config.FieldValue, min)
 	case reflect.String:
-		valid = rule.checkString(value, min)
+		valid = rule.checkString(config.FieldValue, min)
 	case reflect.Map:
-		valid = rule.checkMap(value, min)
+		valid = rule.checkMap(config.FieldValue, min)
 	case reflect.Slice:
-		valid = rule.checkSlice(value, min)
+		valid = rule.checkSlice(config.FieldValue, min)
 	default:
 		return errors.New("invalid type for min validation")
 	}

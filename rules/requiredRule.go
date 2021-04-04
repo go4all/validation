@@ -2,6 +2,7 @@ package rules
 
 import (
 	"fmt"
+	"github.com/go4all/validaiton/types"
 	"github.com/go4all/validaiton/utils"
 	"reflect"
 )
@@ -12,28 +13,28 @@ func (rule Required) GetError(kind reflect.Kind, field string, args []string) st
 	return fmt.Sprintf("%s is required", field)
 }
 
-func (rule Required) Check(field string, value interface{}, args []string, message string) error {
-	err := utils.ErrorMsg(message, rule.GetError(0, field, args))
+func (rule Required) Check(config types.RuleConfig) error {
+	err := utils.ErrorMsg(config.ErrMsg, rule.GetError(0, config.FieldName, config.RuleArgs))
 
-	if value == nil {
+	if config.FieldValue == nil {
 		return err
 	}
 
 	valid := true
 
-	kind := reflect.TypeOf(value).Kind()
+	kind := reflect.TypeOf(config.FieldValue).Kind()
 
 	switch kind {
 	case reflect.String:
-		valid = rule.checkString(value)
+		valid = rule.checkString(config.FieldValue)
 	case reflect.Map:
-		valid = rule.checkMap(value)
+		valid = rule.checkMap(config.FieldValue)
 	case reflect.Slice:
-		valid = rule.checkSlice(value)
+		valid = rule.checkSlice(config.FieldValue)
 	case reflect.Struct:
-		valid = rule.checkStruct(value)
+		valid = rule.checkStruct(config.FieldValue)
 	case reflect.Ptr:
-		valid = rule.checkPointer(value)
+		valid = rule.checkPointer(config.FieldValue)
 	}
 
 	if !valid {
