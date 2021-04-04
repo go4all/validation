@@ -2,7 +2,7 @@ package tests
 
 import (
 	"fmt"
-	"github.com/apni-market/api/app/validation"
+	"github.com/go4all/validaiton"
 	"testing"
 )
 
