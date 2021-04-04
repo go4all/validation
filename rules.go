@@ -1,8 +1,8 @@
 package validation
 
 import (
-	"github.com/go4all/validaiton/rules"
-	"github.com/go4all/validaiton/types"
+	"github.com/go4all/validation/rules"
+	"github.com/go4all/validation/types"
 )
 
 // ruleList is a map of all RuleCheck functions that can be used in request validation.

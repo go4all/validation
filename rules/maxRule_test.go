@@ -1,7 +1,7 @@
 package rules
 
 import (
-	"github.com/go4all/validaiton/types"
+	"github.com/go4all/validation/types"
 	"testing"
 )
 

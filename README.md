@@ -13,8 +13,8 @@ this package. Also this package use `json` tag on struct fields.
 package example
 
 import (
-	"github.com/go4all/validaiton"
-	"github.com/go4all/validaiton/types"
+	"github.com/go4all/validation"
+	"github.com/go4all/validation/types"
 )
 
 type SignUpRequest struct {

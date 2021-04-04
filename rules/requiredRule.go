@@ -2,8 +2,8 @@ package rules
 
 import (
 	"fmt"
-	"github.com/go4all/validaiton/types"
-	"github.com/go4all/validaiton/utils"
+	"github.com/go4all/validation/types"
+	"github.com/go4all/validation/utils"
 	"reflect"
 )
 
