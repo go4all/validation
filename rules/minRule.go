@@ -1,15 +1,12 @@
-package validation
+package rules
 
 import (
 	"errors"
 	"fmt"
+	"github.com/go4all/validaiton/utils"
 	"reflect"
 	"strconv"
 )
-
-func init () {
-	AddRuleCheck("min", Min{}.Check)
-}
 
 type Min struct {}
 
@@ -46,7 +43,7 @@ func (rule Min) Check(field string, value interface{}, args []string, message st
 
 	kind := reflect.TypeOf(value).Kind()
 
-	err := ErrorMsg(message, rule.GetError(kind, field, args))
+	err := utils.ErrorMsg(message, rule.GetError(kind, field, args))
 
 	switch kind {
 	case reflect.Int:

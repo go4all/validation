@@ -1,11 +1,10 @@
-package tests
+package rules
 
 import (
-	"github.com/go4all/validaiton"
 	"testing"
 )
 
-var max validation.Max
+var max Max
 
 func TestMax(t *testing.T) {
 	t.Run("Test with string within max length", func(t *testing.T) {

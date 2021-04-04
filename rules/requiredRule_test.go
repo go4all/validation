@@ -1,11 +1,10 @@
-package tests
+package rules
 
 import (
-	"github.com/go4all/validaiton"
 	"testing"
 )
 
-var required validation.Required
+var required Required
 
 func TestRequired(t *testing.T) {
 	t.Run("Test with string", func(t *testing.T) {

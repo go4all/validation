@@ -1,7 +1,15 @@
 package validation
 
+import "github.com/go4all/validaiton/rules"
+
 // ruleList is a map of all RuleCheck functions that can be used in request validation.
 var ruleList = make(RuleList)
+
+func init() {
+	AddRuleCheck("max", rules.Max{}.Check)
+	AddRuleCheck("min", rules.Min{}.Check)
+	AddRuleCheck("required", rules.Required{}.Check)
+}
 
 // AddRuleCheck will add RuleCheck in the map of RuleCheck functions with provided name to retrieve later
 // Use this to add custom RuleCheck function

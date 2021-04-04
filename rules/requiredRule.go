@@ -1,13 +1,10 @@
-package validation
+package rules
 
 import (
 	"fmt"
+	"github.com/go4all/validaiton/utils"
 	"reflect"
 )
-
-func init () {
-	AddRuleCheck("required", Required{}.Check)
-}
 
 type Required struct {}
 
@@ -16,7 +13,7 @@ func (rule Required) GetError(kind reflect.Kind, field string, args []string) st
 }
 
 func (rule Required) Check(field string, value interface{}, args []string, message string) error {
-	err := ErrorMsg(message, rule.GetError(0, field, args))
+	err := utils.ErrorMsg(message, rule.GetError(0, field, args))
 
 	if value == nil {
 		return err

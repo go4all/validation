@@ -1,11 +1,10 @@
-package tests
+package rules
 
 import (
-	"github.com/go4all/validaiton"
 	"testing"
 )
 
-var min validation.Min
+var min Min
 
 func TestMin(t *testing.T) {
 	t.Run("Test with string within min length", func(t *testing.T) {

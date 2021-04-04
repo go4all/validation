@@ -1,8 +1,7 @@
-package tests
+package validation
 
 import (
 	"fmt"
-	"github.com/go4all/validaiton"
 	"testing"
 )
 
@@ -12,14 +11,14 @@ type Job struct {
 }
 
 type TestRequest struct {
-	Name string `json:"name"`
-	Age int `json:"age"`
+	Name   string   `json:"name"`
+	Age    int      `json:"age"`
 	Skills []string `json:"skills"`
-	Job Job `json:"job"`
+	Job    Job      `json:"job"`
 }
 
-func (tr TestRequest) Validation() (validation.RuleMap, validation.MessageMap)  {
-	rules := validation.RuleMap{
+func (tr TestRequest) Validation() (RuleMap, MessageMap)  {
+	rules := RuleMap{
 		"name": {"required", "max:24"},
 		"age": {"required", "min:18"},
 		"skills": {"required", "max:5"},
@@ -27,7 +26,7 @@ func (tr TestRequest) Validation() (validation.RuleMap, validation.MessageMap)  
 		"job.company": {"required"},
 	}
 
-	messages := validation.MessageMap{
+	messages := MessageMap{
 		"name": map[string]string{
 			"required": "Please fill in your name",
 			"max": "Your name is too long",
@@ -49,7 +48,7 @@ func TestValidation_Run(t *testing.T) {
 				Title: "Software Engineer",
 			},
 		}
-		valid, errs := validation.Run(request)
+		valid, errs := Run(request)
 		fmt.Println(valid, errs)
 	})
 }
