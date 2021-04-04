@@ -1,10 +1,10 @@
 This is a validation package for golang web applications inspired by Laravel validation.
 
-###Installation
+### Installation
 
 `go get -u github.com/go4all/validation`
 
-###Usage
+### Usage
 
 This package can be used to validate struct fields. The struct should implement `CanValidate` interface provide by 
 this package. Also this package use `json` tag on struct fields.
