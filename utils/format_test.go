@@ -7,6 +7,7 @@ func TestValidateRule(t *testing.T) {
 		validRules := []string{
 			"required",
 			"min:12",
+			"max:24.3",
 			"range:12,24",
 		}
 
@@ -23,7 +24,6 @@ func TestValidateRule(t *testing.T) {
 			"!required",
 			"min:",
 			"min: 24, 12",
-			"min:23.32",
 		}
 
 		for _, rule := range invalidRules {
