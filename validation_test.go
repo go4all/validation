@@ -21,7 +21,7 @@ func (tr TestRequest) Validation() (RuleMap, MessageMap)  {
 	rules := RuleMap{
 		"name": {"required", "max:24"},
 		"age": {"required", "min:18"},
-		"skills": {"required", "max:5"},
+		"skills": {"required", "max:53"},
 		"job.title": {"required"},
 		"job.company": {"required"},
 	}
