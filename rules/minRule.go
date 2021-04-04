@@ -32,13 +32,11 @@ func (rule Min) Check(config types.RuleConfig) error {
 		return nil
 	}
 
-	result, convErr := strconv.ParseInt(config.RuleArgs[0], 10, 32)
+	min, convErr := strconv.ParseFloat(config.RuleArgs[0], 64)
 
 	if convErr != nil {
 		return errors.New("invalid args for min validation")
 	}
-
-	min := int(result)
 
 	valid := true
 
@@ -68,42 +66,42 @@ func (rule Min) Check(config types.RuleConfig) error {
 	return nil
 }
 
-func (rule Min) checkInt(value interface{}, min int) bool {
+func (rule Min) checkInt(value interface{}, min float64) bool {
 	if reflect.TypeOf(value).Kind() == reflect.Int {
 		data := value.(int)
+		return data >= int(min)
+	}
+	return false
+}
+
+func (rule Min) checkFloat64(value interface{}, min float64) bool {
+	if reflect.TypeOf(value).Kind() == reflect.Float64 {
+		data := value.(float64)
 		return data >= min
 	}
 	return false
 }
 
-func (rule Min) checkFloat64(value interface{}, min int) bool {
-	if reflect.TypeOf(value).Kind() == reflect.Float64 {
-		data := value.(float64)
-		return data >= float64(min)
-	}
-	return false
-}
-
-func (rule Min) checkString(value interface{}, min int) bool {
+func (rule Min) checkString(value interface{}, min float64) bool {
 	if reflect.TypeOf(value).Kind() == reflect.String {
 		data := value.(string)
-		return len(data) >= min
+		return len(data) >= int(min)
 	}
 	return false
 }
 
-func (rule Min) checkSlice(value interface{}, min int) bool {
+func (rule Min) checkSlice(value interface{}, min float64) bool {
 	if reflect.TypeOf(value).Kind() == reflect.Slice {
 		data := reflect.ValueOf(value)
-		return data.Len() >= min
+		return data.Len() >= int(min)
 	}
 	return false
 }
 
-func (rule Min) checkMap(value interface{}, min int) bool {
+func (rule Min) checkMap(value interface{}, min float64) bool {
 	if reflect.TypeOf(value).Kind() == reflect.Map {
 		data := reflect.ValueOf(value)
-		return data.Len() >= min
+		return data.Len() >= int(min)
 	}
 	return false
 }

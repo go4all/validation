@@ -32,13 +32,11 @@ func (rule Max) Check(config types.RuleConfig) error {
 		return nil
 	}
 
-	result, convErr := strconv.ParseInt(config.RuleArgs[0], 10, 32)
+	max, convErr := strconv.ParseFloat(config.RuleArgs[0], 64)
 
 	if convErr != nil {
 		return errors.New("invalid args for max validation")
 	}
-
-	max := int(result)
 
 	valid := true
 
@@ -71,42 +69,42 @@ func (rule Max) Check(config types.RuleConfig) error {
 	return nil
 }
 
-func (rule Max) checkInt(value interface{}, max int) bool {
+func (rule Max) checkInt(value interface{}, max float64) bool {
 	if reflect.TypeOf(value).Kind() == reflect.Int {
 		data := value.(int)
+		return data <= int(max)
+	}
+	return false
+}
+
+func (rule Max) checkFloat64(value interface{}, max float64) bool {
+	if reflect.TypeOf(value).Kind() == reflect.Float64 {
+		data := value.(float64)
 		return data <= max
 	}
 	return false
 }
 
-func (rule Max) checkFloat64(value interface{}, max int) bool {
-	if reflect.TypeOf(value).Kind() == reflect.Float64 {
-		data := value.(float64)
-		return data <= float64(max)
-	}
-	return false
-}
-
-func (rule Max) checkString(value interface{}, max int) bool {
+func (rule Max) checkString(value interface{}, max float64) bool {
 	if reflect.TypeOf(value).Kind() == reflect.String {
 		data := value.(string)
-		return len(data) <= max
+		return len(data) <= int(max)
 	}
 	return false
 }
 
-func (rule Max) checkSlice(value interface{}, max int) bool {
+func (rule Max) checkSlice(value interface{}, max float64) bool {
 	if reflect.TypeOf(value).Kind() == reflect.Slice {
 		data := reflect.ValueOf(value)
-		return data.Len() <= max
+		return data.Len() <= int(max)
 	}
 	return false
 }
 
-func (rule Max) checkMap(value interface{}, max int) bool {
+func (rule Max) checkMap(value interface{}, max float64) bool {
 	if reflect.TypeOf(value).Kind() == reflect.Map {
 		data := reflect.ValueOf(value)
-		return data.Len() <= max
+		return data.Len() <= int(max)
 	}
 	return false
 }
