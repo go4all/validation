@@ -12,7 +12,10 @@ this package. Also this package use `json` tag on struct fields.
 ```go
 package example
 
-import "github.com/go4all/validaiton"
+import (
+	"github.com/go4all/validaiton"
+	"github.com/go4all/validaiton/types"
+)
 
 type SignUpRequest struct {
 	Name string `json:"name"`
@@ -21,14 +24,14 @@ type SignUpRequest struct {
 	ConfirmPassword string `json:"confirm_password"`
 }
 
-func (request SignUpRequest) Validation() (validation.RuleMap, validation.MessageMap)  {
-    rules := validation.RuleMap{
+func (request SignUpRequest) Validation() (types.RuleMap, types.MessageMap)  {
+    rules := types.RuleMap{
     	"name": {"required"},
     	"email": {"required", "email"},
     	"password": {"required", "min:8"},
     }
     
-    messages := validation.MessageMap{
+    messages := types.MessageMap{
     	"username": {
     		"required": "Please provide username",
         },
