@@ -1,9 +1,11 @@
 package validation
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/go4all/validation/types"
 	"github.com/go4all/validation/utils"
-	"strings"
 )
 
 // ParseRule will parse rule into processable format
@@ -18,7 +20,7 @@ func ParseRule(rule string) (string, []string) {
 }
 
 // Run will validate request with provided validation rules and return error messages if validation fails
-func Run(request types.CanValidate) (bool, types.ErrorBag) {
+func Run(request types.CanValidate) (types.ErrorBag, error) {
 	errs := make(types.ErrorBag)
 	_rules, _messages := request.Validation()
 	_values := GetValues(request)
@@ -27,7 +29,7 @@ func Run(request types.CanValidate) (bool, types.ErrorBag) {
 		// Validate fieldPath
 		err := utils.ValidateFieldPath(fieldPath)
 		if err != nil {
-			panic(err)
+			return errs, err
 		}
 		// This will hold errors for a specific field
 		fieldErrors := make([]string, 0)
@@ -36,23 +38,23 @@ func Run(request types.CanValidate) (bool, types.ErrorBag) {
 			// Empty string for a rule should be ignored
 			err = utils.ValidateRule(rule)
 			if err != nil {
-				panic(err)
+				return errs, err
 			}
 			ruleName, ruleArgs := ParseRule(rule)
 			ruleCheck := GetRuleCheck(ruleName)
 
 			if ruleCheck == nil {
-				panic("'" + ruleName + "' rule is missing")
+				return errs, fmt.Errorf("'%s' rule is missing", ruleName)
 			}
 
 			fieldName, fieldValue := ValueByFieldPath(_values, fieldPath)
 
 			ruleConfig := types.RuleConfig{
-				FieldName: fieldName,
+				FieldName:  fieldName,
 				FieldValue: fieldValue,
-				RuleArgs: ruleArgs,
-				ErrMsg: _messages[fieldPath][ruleName],
-				Values: _values,
+				RuleArgs:   ruleArgs,
+				ErrMsg:     _messages[fieldPath][ruleName],
+				Values:     _values,
 			}
 
 			err := ruleCheck(ruleConfig)
@@ -65,5 +67,5 @@ func Run(request types.CanValidate) (bool, types.ErrorBag) {
 		}
 	}
 
-	return len(errs) == 0, errs
+	return errs, nil
 }
