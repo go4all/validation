@@ -1,8 +1,8 @@
 package validation
 
 import (
+	"github.com/go4all/validation/utils"
 	"reflect"
-	"strings"
 )
 
 func GetValues(data interface{}) map[string]interface{} {
@@ -40,9 +40,11 @@ func GetValues(data interface{}) map[string]interface{} {
 func ValueByFieldPath(values map[string]interface{}, fieldPath string) (string, interface{}) {
 	value, ok := values[fieldPath]
 
-	segments := strings.Split(fieldPath, ".")
+	if !ok {
+		return fieldPath, nil
+	}
 
-	name := segments[len(segments)-1]
+	name, ok  := utils.GetFieldNameFromPath(fieldPath)
 
 	if ok {
 		return name, value
