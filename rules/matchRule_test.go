@@ -20,7 +20,7 @@ func TestMatch(t *testing.T) {
 			},
 		})
 		if err == nil {
-			t.Error("Expected nil got error")
+			t.Error("Expected error got nil")
 		} else if err.Error() != customMsg {
 			t.Error("Expected custom error got default error")
 		}

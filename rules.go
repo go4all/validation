@@ -11,7 +11,10 @@ var ruleList = make(types.RuleList)
 func init() {
 	AddRuleCheck("max", rules.Max{}.Check)
 	AddRuleCheck("min", rules.Min{}.Check)
+	AddRuleCheck("email", rules.Email{}.Check)
+	AddRuleCheck("match", rules.Match{}.Check)
 	AddRuleCheck("required", rules.Required{}.Check)
+	AddRuleCheck("alpha_num", rules.AlphaNum{}.Check)
 }
 
 // AddRuleCheck will add RuleCheck in the map of RuleCheck functions with provided name to retrieve later
