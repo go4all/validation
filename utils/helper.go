@@ -14,3 +14,12 @@ func GetFieldNameFromPath(path string) (string, bool) {
 
 	return segments[len(segments)-1], true
 }
+
+func HasError(err string, errs []string) bool {
+	for _, msg := range errs {
+		if err == msg {
+			return true
+		}
+	}
+	return false
+}
