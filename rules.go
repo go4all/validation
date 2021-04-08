@@ -13,6 +13,7 @@ func init() {
 	AddRuleCheck("min", rules.Min{}.Check)
 	AddRuleCheck("email", rules.Email{}.Check)
 	AddRuleCheck("match", rules.Match{}.Check)
+	AddRuleCheck("regex", rules.Regex{}.Check)
 	AddRuleCheck("required", rules.Required{}.Check)
 	AddRuleCheck("alpha_num", rules.AlphaNum{}.Check)
 }
