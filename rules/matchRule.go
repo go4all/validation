@@ -8,7 +8,7 @@ import (
 	"reflect"
 )
 
-type Match struct {}
+type Match struct{}
 
 func (rule Match) GetError(kind reflect.Kind, field string, args []string) string {
 	return fmt.Sprintf("%s should match with %s", field, args[0])
@@ -28,7 +28,7 @@ func (rule Match) Check(config types.RuleConfig) error {
 
 	matchingValue, ok := config.Values[matchingField]
 
-	if !ok || matchingValue != config.FieldValue{
+	if !ok || matchingValue != config.FieldValue {
 		return err
 	}
 

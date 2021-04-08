@@ -8,7 +8,7 @@ import (
 	"regexp"
 )
 
-type Email struct {}
+type Email struct{}
 
 func (rule Email) GetError(kind reflect.Kind, field string, args []string) string {
 	return fmt.Sprintf("%s is not a valid email address", field)

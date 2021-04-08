@@ -11,9 +11,9 @@ func TestAlphaNum(t *testing.T) {
 	t.Run("Test with custom message", func(t *testing.T) {
 		customMsg := "Username is not valid"
 		err := alphaNum.Check(types.RuleConfig{
-			FieldName: "username",
+			FieldName:  "username",
 			FieldValue: "secret 23",
-			ErrMsg: customMsg,
+			ErrMsg:     customMsg,
 		})
 		if err == nil {
 			t.Error("Expected error got nil")
@@ -32,7 +32,7 @@ func TestAlphaNum(t *testing.T) {
 
 		for _, value := range values {
 			err := alphaNum.Check(types.RuleConfig{
-				FieldName: "username",
+				FieldName:  "username",
 				FieldValue: value,
 			})
 
@@ -51,7 +51,7 @@ func TestAlphaNum(t *testing.T) {
 
 		for _, value := range values {
 			err := alphaNum.Check(types.RuleConfig{
-				FieldName: "username",
+				FieldName:  "username",
 				FieldValue: value,
 			})
 

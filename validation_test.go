@@ -1,6 +1,8 @@
 package validation
 
 import (
+	"fmt"
+	"github.com/go4all/validation/utils"
 	"testing"
 
 	"github.com/go4all/validation/types"
@@ -11,29 +13,39 @@ type Job struct {
 	Company string `json:"company"`
 }
 
-type TestRequest struct {
-	Name   string   `json:"name"`
-	Age    int      `json:"age"`
-	Skills []string `json:"skills"`
-	Job    Job      `json:"job"`
+type SignUpRequest struct {
+	Name            string   `json:"name"`
+	Age             int      `json:"age"`
+	Job             Job      `json:"job"`
+	Skills          []string `json:"skills"`
+	Email           string   `json:"email"`
+	Username        string   `json:"username"`
+	NewPassword     string   `json:"new_password"`
+	ConfirmPassword string   `json:"confirm_password"`
 }
 
-func (tr TestRequest) Validation() (types.RuleMap, types.MessageMap) {
+func (tr SignUpRequest) Validation() (types.RuleMap, types.MessageMap) {
 	rules := types.RuleMap{
-		"name":        {"required", "max:24"},
-		"age":         {"required", "min:18"},
-		"skills":      {"required", "max:53"},
-		"job.title":   {"required"},
-		"job.company": {"required"},
+		"name":             {"required", "max:24"},
+		"age":              {"min:18", "max:65"},
+		"skills":           {"required", "max:5"},
+		"job.title":        {"required"},
+		"email":            {"required", "email"},
+		"username":         {"required", "alpha_num"},
+		"new_password":     {"required", "min:8"},
+		"confirm_password": {"required", "match:new_password"},
 	}
 
 	messages := types.MessageMap{
 		"name": map[string]string{
-			"required": "Please fill in your name",
+			"required": "Let us know your name",
 			"max":      "Your name is too long",
 		},
 		"skills": {
 			"required": "Skills are required",
+		},
+		"confirm_password": {
+			"match": "Both passwords should match",
 		},
 	}
 	return rules, messages
@@ -41,32 +53,54 @@ func (tr TestRequest) Validation() (types.RuleMap, types.MessageMap) {
 
 func TestValidation_Run(t *testing.T) {
 	t.Run("Test validation", func(t *testing.T) {
-		request := TestRequest{
+		request := SignUpRequest{
 			Name:   "Abu Bakkar Siddique",
-			Age:    21,
-			Skills: []string{"JavaScript", "HTML", "CSS", "React", "Vue"},
+			Age:    66,
+			Skills: []string{},
 			Job: Job{
-				Title: "Software Engineer",
+				Title:   "Software Engineer",
+				Company: "Love,Bonito",
 			},
+			Email:           "hello.com",
+			Username:        "234asdf",
+			NewPassword:     "secret133",
+			ConfirmPassword: "secret123",
 		}
 		errs, err := Run(request)
 
 		if err != nil {
-			t.Error("Got error while validation data")
+			t.Error(err.Error())
 		}
 
-		ruleErr, ok := errs["job.company"]
-
-		if !ok {
-			t.Error("'job.company' key missing from errors")
+		fields := map[string][]string{
+			"email":            {},
+			"confirm_password": {},
 		}
 
-		if len(ruleErr) == 0 {
-			t.Error("Expected error for 'job.company'")
-		}
+		for field, msgs := range fields {
+			ruleErrs, ok := errs[field]
 
-		if ruleErr[0] != "company is required" {
-			t.Errorf("Expected error 'company is required' got '%s'", ruleErr[0])
+			if !ok {
+				t.Errorf("Expected errors for '%s'", field)
+			}
+
+			if len(ruleErrs) == 0 {
+				t.Errorf("Expected errors for '%s', found none", field)
+			}
+
+			for _, msg := range msgs {
+				if !utils.HasError(msg, ruleErrs) {
+					t.Errorf("Missing error message '%s' for '%s'", msg, field)
+				}
+			}
 		}
+		fmt.Println("-------------")
+		for field, msgs := range errs {
+			fmt.Println(field)
+			for _, msg := range msgs {
+				fmt.Printf("\t- %s\n", msg)
+			}
+		}
+		fmt.Println("-------------")
 	})
 }

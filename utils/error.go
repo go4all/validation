@@ -17,4 +17,3 @@ func ErrorMsg(custom, format string, values ...interface{}) error {
 
 	return errors.New(actualMsg)
 }
-

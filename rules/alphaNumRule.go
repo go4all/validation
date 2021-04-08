@@ -8,7 +8,7 @@ import (
 	"regexp"
 )
 
-type AlphaNum struct {}
+type AlphaNum struct{}
 
 func (rule AlphaNum) GetError(kind reflect.Kind, field string, args []string) string {
 	return fmt.Sprintf("%s format is not valid", field)

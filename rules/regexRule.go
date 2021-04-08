@@ -9,7 +9,7 @@ import (
 	"regexp"
 )
 
-type Regex struct {}
+type Regex struct{}
 
 func (rule Regex) GetError(kind reflect.Kind, field string, args []string) string {
 	return fmt.Sprintf("%s format is not valid", field)

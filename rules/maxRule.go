@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-type Max struct {}
+type Max struct{}
 
 func (rule Max) GetError(kind reflect.Kind, field string, args []string) string {
 	switch kind {

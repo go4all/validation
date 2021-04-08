@@ -44,7 +44,7 @@ func ValueByFieldPath(values map[string]interface{}, fieldPath string) (string, 
 		return fieldPath, nil
 	}
 
-	name, ok  := utils.GetFieldNameFromPath(fieldPath)
+	name, ok := utils.GetFieldNameFromPath(fieldPath)
 
 	if ok {
 		return name, value

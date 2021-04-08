@@ -11,10 +11,10 @@ func TestRegex(t *testing.T) {
 	t.Run("Test with custom message", func(t *testing.T) {
 		customMsg := "Username is not valid"
 		err := regex.Check(types.RuleConfig{
-			FieldName: "username",
+			FieldName:  "username",
 			FieldValue: "ads-asf",
-			RuleArgs: []string{"^[a-z][a-z0-9_]{5,23}$"},
-			ErrMsg: customMsg,
+			RuleArgs:   []string{"^[a-z][a-z0-9_]{5,23}$"},
+			ErrMsg:     customMsg,
 		})
 		if err == nil {
 			t.Error("Expected error got nil")
@@ -33,9 +33,9 @@ func TestRegex(t *testing.T) {
 
 		for _, value := range values {
 			err := regex.Check(types.RuleConfig{
-				FieldName: "username",
+				FieldName:  "username",
 				FieldValue: value,
-				RuleArgs: []string{"^[a-z][a-z0-9_]{5,23}$"},
+				RuleArgs:   []string{"^[a-z][a-z0-9_]{5,23}$"},
 			})
 
 			if err != nil {
@@ -54,9 +54,9 @@ func TestRegex(t *testing.T) {
 
 		for _, value := range values {
 			err := regex.Check(types.RuleConfig{
-				FieldName: "username",
+				FieldName:  "username",
 				FieldValue: value,
-				RuleArgs: []string{"^[a-z][a-z0-9_]{5,23}$"},
+				RuleArgs:   []string{"^[a-z][a-z0-9_]{5,23}$"},
 			})
 
 			if err == nil {

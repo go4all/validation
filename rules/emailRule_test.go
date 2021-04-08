@@ -11,9 +11,9 @@ func TestEmail(t *testing.T) {
 	t.Run("Test with custom message", func(t *testing.T) {
 		customMsg := "Email is not valid"
 		err := email.Check(types.RuleConfig{
-			FieldName: "email",
+			FieldName:  "email",
 			FieldValue: "test_example.com",
-			ErrMsg: customMsg,
+			ErrMsg:     customMsg,
 		})
 		if err == nil {
 			t.Error("Expected error got nil")
@@ -33,7 +33,7 @@ func TestEmail(t *testing.T) {
 
 		for _, value := range values {
 			err := email.Check(types.RuleConfig{
-				FieldName: "email",
+				FieldName:  "email",
 				FieldValue: value,
 			})
 
@@ -52,7 +52,7 @@ func TestEmail(t *testing.T) {
 
 		for _, value := range values {
 			err := email.Check(types.RuleConfig{
-				FieldName: "email",
+				FieldName:  "email",
 				FieldValue: value,
 			})
 

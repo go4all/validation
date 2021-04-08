@@ -23,6 +23,7 @@ func init() {
 func AddRuleCheck(name string, rule types.RuleCheck) {
 	ruleList[name] = rule
 }
+
 // GetRuleCheck will return a RuleCheck function added with provided name from the map of available RuleCheck functions
 func GetRuleCheck(name string) types.RuleCheck {
 	rule, exists := ruleList[name]

@@ -7,7 +7,7 @@ import (
 	"reflect"
 )
 
-type Required struct {}
+type Required struct{}
 
 func (rule Required) GetError(kind reflect.Kind, field string, args []string) string {
 	return fmt.Sprintf("%s is required", field)

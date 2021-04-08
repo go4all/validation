@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-type Min struct {}
+type Min struct{}
 
 func (rule Min) GetError(kind reflect.Kind, field string, args []string) string {
 	switch kind {

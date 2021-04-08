@@ -5,21 +5,21 @@ import (
 )
 
 type Location struct {
-	City string `json:"city"`
-	State string `json:"state"`
+	City    string `json:"city"`
+	State   string `json:"state"`
 	Country string `json:"country"`
 }
 
 type Profile struct {
-	Title string `json:"title"`
-	Company string `json:"company"`
-	Skills []string `json:"skills"`
+	Title    string   `json:"title"`
+	Company  string   `json:"company"`
+	Skills   []string `json:"skills"`
 	Location Location `json:"location"`
 }
 
 type User struct {
-	Name string `json:"name"`
-	Email string
+	Name    string `json:"name"`
+	Email   string
 	Profile Profile `json:"profile"`
 }
 
@@ -73,15 +73,15 @@ func TestValueByFieldPath(t *testing.T) {
 
 func TestGetValues(t *testing.T) {
 	user := User{
-		Name: "Abu Bakkar",
+		Name:  "Abu Bakkar",
 		Email: "user@example.com",
 		Profile: Profile{
-			Title: "Software Engineer",
+			Title:   "Software Engineer",
 			Company: "Love,Bonito",
-			Skills: []string{"JavaScript", "HTML", "CSS", "Vue", "React"},
+			Skills:  []string{"JavaScript", "HTML", "CSS", "Vue", "React"},
 			Location: Location{
-				City: "Gujrat",
-				State: "Punjab",
+				City:    "Gujrat",
+				State:   "Punjab",
 				Country: "Pakistan",
 			},
 		},

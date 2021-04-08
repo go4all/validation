@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"regexp"
 )
+
 // ValidateFieldPath should valid field path
 // Valid Format "field[.subField]"
 func ValidateFieldPath(fieldPath string) error {
@@ -13,6 +14,7 @@ func ValidateFieldPath(fieldPath string) error {
 	}
 	return nil
 }
+
 // ValidateRule should validate rule format
 // Valid Format: "name[:arg[,arg]]"
 func ValidateRule(rule string) error {
