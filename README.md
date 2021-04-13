@@ -132,7 +132,7 @@ Custom rule example
 package example
 
 import (
-	"github.com/go4all/validaiton/types"
+	"github.com/go4all/validation/types"
 )
 
 // Custom rule by implementing Rule interface
