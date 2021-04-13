@@ -160,7 +160,9 @@ import (
 )
 
 func init() {
+	// adding rule implementing `Rule` interface
 	validation.AddRuleCheck("phone", PhoneRule{}.Check)
+	// adding func of type `types.RuleCheck`
 	validation.AddRuleCheck("ip", IpRule)
 }
 ```
